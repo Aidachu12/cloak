@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tab Title and Favicon Changer</title>
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      padding: 20px;
+
+      background-color: #121212;
+
+      color: white;
+
+    }
+
+    label {
+
+      display: block;
+
+      margin-top: 10px;
+
+    }
+
+    input {
+
+      padding: 5px;
+
+      width: 250px;
+
+      margin-top: 5px;
+
+    }
+
+    button {
+
+      margin-top: 10px;
+
+      padding: 5px 10px;
+
+      background-color: #333;
+
+      color: white;
+
+      border: none;
+
+      cursor: pointer;
+
+    }
+
+    button:hover {
+
+      background-color: #555;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Change Tab Title and Favicon</h1>
+
+
+
+  <label for="tabTitle">Enter a new tab title:</label>
+
+  <input type="text" id="tabTitle" name="tabTitle" placeholder="New Tab Title" required>
+
+
+
+  <label for="faviconURL">Enter a new favicon URL:</label>
+
+  <input type="text" id="faviconURL" name="faviconURL" placeholder="Favicon URL" required>
+
+
+
+  <button id="changeButton">Change Tab & Favicon</button>
+
+
+
+  <script>
+
+    // Function to set the favicon dynamically
+
+    function setFavicon(url) {
+
+      let favicon = document.querySelector("link[rel='icon']");
+
+      if (!favicon) {
+
+        favicon = document.createElement("link");
+
+        favicon.rel = "icon";
+
+        document.head.appendChild(favicon);
+
+      }
+
+      favicon.href = url;
+
+      favicon.href = url + '?v=' + new Date().getTime();  // Add a timestamp to avoid caching issues
+
+    }
+
+
+
+    // Load saved title and favicon on page load
+
+    function loadSavedData() {
+
+      const savedTitle = localStorage.getItem('tabTitle');
+
+      const savedFavicon = localStorage.getItem('faviconURL');
+
+
+
+      if (savedTitle) {
+
+        document.title = savedTitle;  // Set the tab title
+
+        document.getElementById('tabTitle').value = savedTitle;  // Prefill the title input
+
+      }
+
+
+
+      if (savedFavicon) {
+
+        setFavicon(savedFavicon);  // Set the favicon
+
+        document.getElementById('faviconURL').value = savedFavicon;  // Prefill the favicon URL input
+
+      }
+
+    }
+
+
+
+    // Function to change tab title and favicon, and save them to localStorage
+
+    function changeTabAndFavicon() {
+
+      const newTitle = document.getElementById('tabTitle').value;
+
+      const newFavicon = document.getElementById('faviconURL').value;
+
+
+
+      // Change tab title
+
+      document.title = newTitle;
+
+
+
+      // Change favicon
+
+      setFavicon(newFavicon);
+
+
+
+      // Save the new title and favicon to localStorage
+
+      localStorage.setItem('tabTitle', newTitle);
+
+      localStorage.setItem('faviconURL', newFavicon);
+
+    }
+
+
+
+    // Add event listener to the button
+
+    document.getElementById('changeButton').addEventListener('click', changeTabAndFavicon);
+
+
+
+    // Load saved settings when the page loads
+
+    window.onload = loadSavedData;
+
+  </script>
+
+</body>
+
+</html>
